@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Admin\DashboardController;
+use App\Http\Controllers\Author\DashboardController as AuthorDashboardController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +21,14 @@ Route::get('/', function () {
 
 Route::get('/test', function() {
     return view('back-end.dashboard');
+});
+
+Route::group(['as'=>'admin.', 'prefix'=>'admin', 'namespace'=>'Admin', 'middleware'=>['auth','admin']], function() {
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
+});
+
+Route::group(['as'=>'author.', 'prefix'=>'author', 'namespace'=>'Author', 'middleware'=>['auth','author']], function() {
+    Route::get('dashboard', [AuthorDashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('/dashboard', function () {
